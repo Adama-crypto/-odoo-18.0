@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+        <!-- Demo Partners / Fournisseurs -->
+        <record id="it_partner_fournisseur_1" model="res.partner">
+            <field name="name">TechPark Solutions CI</field>
+            <field name="is_company">True</field>
+            <field name="email">contact@techpark-solutions.ci</field>
+            <field name="phone">+225 07 00 11 22 33</field>
+        </record>
+
+        <record id="it_partner_fournisseur_2" model="res.partner">
+            <field name="name">Info Services CI</field>
+            <field name="is_company">True</field>
+            <field name="email">info@infoservices.ci</field>
+            <field name="phone">+225 07 44 55 66 77</field>
+        </record>
+
         <!-- Demo Equipment (10) -->
         <record id="it_equipement_demo_1" model="it.equipement">
             <field name="name">LPT-001</field>
@@ -175,7 +190,7 @@
         <!-- Demo Contracts (3) -->
         <record id="it_contrat_demo_1" model="it.contrat">
             <field name="name">MAINT-2024-001</field>
-            <field name="fournisseur_id" ref="base.res_partner_12"/>
+            <field name="fournisseur_id" ref="it_partner_fournisseur_1"/>
             <field name="type_contrat">maintenance</field>
             <field name="date_debut">2024-03-20</field>
             <field name="date_fin">2025-03-20</field>
@@ -186,7 +201,7 @@
 
         <record id="it_contrat_demo_2" model="it.contrat">
             <field name="name">LIC-2024-001</field>
-            <field name="fournisseur_id" ref="base.res_partner_12"/>
+            <field name="fournisseur_id" ref="it_partner_fournisseur_1"/>
             <field name="type_contrat">licence</field>
             <field name="date_debut">2024-05-20</field>
             <field name="date_fin">2025-05-20</field>
@@ -196,7 +211,7 @@
 
         <record id="it_contrat_demo_3" model="it.contrat">
             <field name="name">SUPP-2024-001</field>
-            <field name="fournisseur_id" ref="base.res_partner_3"/>
+            <field name="fournisseur_id" ref="it_partner_fournisseur_2"/>
             <field name="type_contrat">support</field>
             <field name="date_debut">2024-04-20</field>
             <field name="date_fin">2025-08-03</field>
