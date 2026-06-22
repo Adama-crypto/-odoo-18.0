@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Séquence des commandes -->
+        <record id="seq_shop_order" model="ir.sequence">
+            <field name="name">Commande Boutique</field>
+            <field name="code">shop.order</field>
+            <field name="prefix">CMD/%(year)s/%(month)s/</field>
+            <field name="suffix"></field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="implementation">standard</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report: Inventaire complet -->
+        <report 
+            id="it_inventaire_report" 
+            model="it.equipement" 
+            string="Inventaire" 
+            report_type="qweb-pdf" 
+            name="it_parc.it_inventaire_template" 
+            file="it_parc.it_inventaire_template"
+            print_report_name="'Inventaire_%s' % (time.strftime('%Y%m%d'))"/>
+
+        <template id="it_inventaire_template">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Inventaire du Parc Informatique</h2>
+                    <p class="text-muted">Généré le : <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/></p>
+                    
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Numéro de série</th>
+                                <th>Catégorie</th>
+                                <th>Marque</th>
+                                <th>Modèle</th>
+                                <th>Site</th>
+                                <th>Département</th>
+                                <th>Employé</th>
+                                <th>État</th>
+                                <th>Date garantie</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="equipement">
+                                <tr>
+                                    <td><span t-field="equipement.name"/></td>
+                                    <td><span t-field="equipement.numero_serie"/></td>
+                                    <td><span t-field="equipement.categorie_id.name"/></td>
+                                    <td><span t-field="equipement.marque"/></td>
+                                    <td><span t-field="equipement.modele"/></td>
+                                    <td><span t-field="equipement.site_id.name"/></td>
+                                    <td><span t-field="equipement.departement_id.name"/></td>
+                                    <td><span t-field="equipement.employe_id.name"/></td>
+                                    <td><span t-field="equipement.state"/></td>
+                                    <td><span t-field="equipement.date_garantie"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="row mt32">
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total équipements</h5>
+                                    <h3 class="card-text"><t t-esc="len(docs)"/></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Équipements affectés</h5>
+                                    <h3 class="card-text"><t t-esc="len(docs.filtered(lambda e: e.state == 'affecte'))"/></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">En maintenance</h5>
+                                    <h3 class="card-text"><t t-esc="len(docs.filtered(lambda e: e.state == 'maintenance'))"/></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="estate_menu_root" name="Real Estate"/>
+    
+    <menuitem id="estate_menu_advertisements" name="Advertisements" parent="estate_menu_root"/>
+    <menuitem id="estate_menu_properties" name="Properties" parent="estate_menu_advertisements" action="estate_property_action"/>
+
+    <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root"/>
+    <menuitem id="estate_menu_property_types" name="Property Types" parent="estate_menu_settings" action="estate_property_type_action"/>
+    <menuitem id="estate_menu_property_tags" name="Property Tags" parent="estate_menu_settings" action="estate_property_tag_action"/>
+    <menuitem id="estate_menu_rooms" name="Pièces" parent="estate_menu_settings" action="estate_room_action"/>
+    <menuitem id="estate_menu_room_types" name="Types de pièces" parent="estate_menu_settings" action="estate_room_type_action"/>
+
+    <menuitem id="estate_menu_management" name="Gestion" parent="estate_menu_root"/>
+    <menuitem id="estate_menu_rentals" name="Locations" parent="estate_menu_management" action="estate_rental_action"/>
+    <menuitem id="estate_menu_tenants" name="Locataires" parent="estate_menu_management" action="estate_tenant_action"/>
+    <menuitem id="estate_menu_interventions" name="Interventions" parent="estate_menu_management" action="estate_intervention_action"/>
+</odoo>

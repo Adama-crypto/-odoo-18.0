@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- IT Intervention Tree View -->
+        <record id="it_intervention_tree_view" model="ir.ui.view">
+            <field name="name">it.intervention.list</field>
+            <field name="model">it.intervention</field>
+            <field name="arch" type="xml">
+                <list string="Interventions">
+                    <field name="name"/>
+                    <field name="equipement_id"/>
+                    <field name="technicien_id"/>
+                    <field name="type_intervention"/>
+                    <field name="priorite" decoration-danger="priorite=='critique'" decoration-warning="priorite=='haute'"/>
+                    <field name="date_debut"/>
+                    <field name="state" decoration-success="state=='termine'" decoration-warning="state=='en_cours'" decoration-info="state=='planifie'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- IT Intervention Form View -->
+        <record id="it_intervention_form_view" model="ir.ui.view">
+            <field name="name">it.intervention.form</field>
+            <field name="model">it.intervention</field>
+            <field name="arch" type="xml">
+                <form string="Intervention">
+                    <header>
+                        <button name="action_demarrer" string="Démarrer" type="object" class="btn-primary" invisible="state != 'planifie'"/>
+                        <button name="action_terminer" string="Terminer" type="object" class="btn-primary" invisible="state != 'en_cours'"/>
+                        <button name="action_annuler" string="Annuler" type="object" invisible="state in ['termine', 'annule']"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="equipement_id" required="1"/>
+                                <field name="technicien_id" required="1"/>
+                            </group>
+                            <group>
+                                <field name="type_intervention" required="1"/>
+                                <field name="priorite" required="1"/>
+                                <field name="cout"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="date_debut" required="1"/>
+                                <field name="date_fin"/>
+                                <field name="duree_heures"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" required="1"/>
+                            </page>
+                            <page string="Rapport">
+                                <field name="rapport"/>
+                                <field name="pieces_remplacees"/>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- IT Intervention Calendar View -->
+        <record id="it_intervention_calendar_view" model="ir.ui.view">
+            <field name="name">it.intervention.calendar</field>
+            <field name="model">it.intervention</field>
+            <field name="arch" type="xml">
+                <calendar string="Interventions" date_start="date_debut" date_stop="date_fin" color="technicien_id">
+                    <field name="name"/>
+                    <field name="equipement_id"/>
+                    <field name="type_intervention"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- IT Intervention Search View -->
+        <record id="it_intervention_search_view" model="ir.ui.view">
+            <field name="name">it.intervention.search</field>
+            <field name="model">it.intervention</field>
+            <field name="arch" type="xml">
+                <search string="Recherche intervention">
+                    <field name="name"/>
+                    <field name="equipement_id"/>
+                    <field name="technicien_id"/>
+                    <field name="type_intervention"/>
+                    <field name="priorite"/>
+                    <field name="state"/>
+                    <filter string="Planifiées" name="state_planifie" domain="[('state','=','planifie')]"/>
+                    <filter string="En cours" name="state_en_cours" domain="[('state','=','en_cours')]"/>
+                    <filter string="Terminées" name="state_termine" domain="[('state','=','termine')]"/>
+                    <filter string="Mes interventions" name="my_interventions" domain="[('technicien_id.user_id','=',uid)]"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Équipement" name="group_equipement" domain="[]" context="{'group_by':'equipement_id'}"/>
+                        <filter string="Technicien" name="group_technicien" domain="[]" context="{'group_by':'technicien_id'}"/>
+                        <filter string="Type" name="group_type" domain="[]" context="{'group_by':'type_intervention'}"/>
+                        <filter string="État" name="group_state" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- IT Intervention Action -->
+        <record id="it_intervention_action" model="ir.actions.act_window">
+            <field name="name">Interventions</field>
+            <field name="res_model">it.intervention</field>
+            <field name="view_mode">list,calendar,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première intervention
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

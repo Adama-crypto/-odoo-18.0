@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Séquence pour les interventions -->
+        <record id="it_intervention_seq" model="ir.sequence">
+            <field name="name">Intervention IT</field>
+            <field name="code">it.intervention</field>
+            <field name="prefix">INT</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+        </record>
+
+        <!-- Sites par défaut -->
+        <record id="it_site_abidjan_1" model="it.site">
+            <field name="name">Abidjan - Siège</field>
+            <field name="adresse">Cocody, Abidjan</field>
+            <field name="ville">Abidjan</field>
+            <field name="pays_id" ref="base.ci"/>
+            <field name="telephone">+225 01 02 03 04 05</field>
+            <field name="email">contact@techpark.ci</field>
+        </record>
+
+        <record id="it_site_abidjan_2" model="it.site">
+            <field name="name">Abidjan - Annexe</field>
+            <field name="adresse">Plateau, Abidjan</field>
+            <field name="ville">Abidjan</field>
+            <field name="pays_id" ref="base.ci"/>
+            <field name="telephone">+225 01 02 03 04 06</field>
+            <field name="email">annexe@techpark.ci</field>
+        </record>
+
+        <record id="it_site_bouake" model="it.site">
+            <field name="name">Bouaké</field>
+            <field name="adresse">Centre-ville, Bouaké</field>
+            <field name="ville">Bouaké</field>
+            <field name="pays_id" ref="base.ci"/>
+            <field name="telephone">+225 01 02 03 04 07</field>
+            <field name="email">bouake@techpark.ci</field>
+        </record>
+
+        <!-- Catégories d'équipement par défaut -->
+        <record id="it_categorie_pc" model="it.equipement.categorie">
+            <field name="name">PC Portable</field>
+            <field name="code">PC-LAPTOP</field>
+            <field name="description">Ordinateurs portables</field>
+        </record>
+
+        <record id="it_categorie_pc_fixe" model="it.equipement.categorie">
+            <field name="name">PC Fixe</field>
+            <field name="code">PC-DESKTOP</field>
+            <field name="description">Ordinateurs de bureau</field>
+        </record>
+
+        <record id="it_categorie_serveur" model="it.equipement.categorie">
+            <field name="name">Serveur</field>
+            <field name="code">SRV</field>
+            <field name="description">Serveurs</field>
+        </record>
+
+        <record id="it_categorie_imprimante" model="it.equipement.categorie">
+            <field name="name">Imprimante</field>
+            <field name="code">PRN</field>
+            <field name="description">Imprimantes</field>
+        </record>
+
+        <record id="it_categorie_reseau" model="it.equipement.categorie">
+            <field name="name">Équipement réseau</field>
+            <field name="code">NET</field>
+            <field name="description">Routeurs, switchs, etc.</field>
+        </record>
+
+        <record id="it_categorie_telephone" model="it.equipement.categorie">
+            <field name="name">Téléphone IP</field>
+            <field name="code">PHONE</field>
+            <field name="description">Téléphones IP</field>
+        </record>
+    </data>
+</odoo>

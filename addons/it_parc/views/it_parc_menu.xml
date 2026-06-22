@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- IT Parc Menu -->
+        <menuitem id="it_parc_root_menu" name="IT Parc" sequence="10" groups="base.group_user"/>
+        
+        <!-- Équipements Menu -->
+        <menuitem id="it_equipement_menu" name="Équipements" parent="it_parc_root_menu" sequence="1"/>
+        <menuitem id="it_equipement_action_menu" name="Tous les équipements" parent="it_equipement_menu" action="it_equipement_action" sequence="1"/>
+        <menuitem id="it_equipement_categorie_menu" name="Catégories" parent="it_equipement_menu" action="it_equipement_categorie_action" sequence="2"/>
+        <menuitem id="it_site_menu" name="Sites" parent="it_equipement_menu" action="it_site_action" sequence="3"/>
+        
+        <!-- Affectations Menu -->
+        <menuitem id="it_affectation_menu" name="Affectations" parent="it_parc_root_menu" sequence="2"/>
+        <menuitem id="it_affectation_action_menu" name="Historique des affectations" parent="it_affectation_menu" action="it_affectation_action" sequence="1"/>
+        
+        <!-- Interventions Menu -->
+        <menuitem id="it_intervention_menu" name="Interventions" parent="it_parc_root_menu" sequence="3"/>
+        <menuitem id="it_intervention_action_menu" name="Interventions" parent="it_intervention_menu" action="it_intervention_action" sequence="1"/>
+        
+        <!-- Contrats Menu -->
+        <menuitem id="it_contrat_menu" name="Contrats" parent="it_parc_root_menu" sequence="4"/>
+        <menuitem id="it_contrat_action_menu" name="Contrats fournisseurs" parent="it_contrat_menu" action="it_contrat_action" sequence="1"/>
+        
+        <!-- Alertes Menu -->
+        <menuitem id="it_alerte_menu" name="Alertes" parent="it_parc_root_menu" sequence="5"/>
+        <menuitem id="it_alerte_action_menu" name="Configuration des alertes" parent="it_alerte_menu" action="it_alerte_action" sequence="1"/>
+        <menuitem id="it_alerte_log_menu" name="Historique des scans" parent="it_alerte_menu" action="it_alerte_log_action" sequence="2"/>
+        
+        <!-- Dashboard Menu -->
+        <menuitem id="it_dashboard_menu" name="Dashboard" parent="it_parc_root_menu" sequence="6"/>
+        
+        <!-- Configuration Menu -->
+        <menuitem id="it_parc_config_menu" name="Configuration" parent="it_parc_root_menu" sequence="99"/>
+    </data>
+</odoo>

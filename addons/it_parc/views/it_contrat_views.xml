@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- IT Contrat Tree View -->
+        <record id="it_contrat_tree_view" model="ir.ui.view">
+            <field name="name">it.contrat.list</field>
+            <field name="model">it.contrat</field>
+            <field name="arch" type="xml">
+                <list string="Contrats">
+                    <field name="name"/>
+                    <field name="fournisseur_id"/>
+                    <field name="type_contrat"/>
+                    <field name="date_debut"/>
+                    <field name="date_fin"/>
+                    <field name="montant"/>
+                    <field name="state" decoration-success="state=='actif'" decoration-warning="state=='expire'"/>
+                    <field name="jours_restants" decoration-danger="jours_restants&lt;=30"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- IT Contrat Form View -->
+        <record id="it_contrat_form_view" model="ir.ui.view">
+            <field name="name">it.contrat.form</field>
+            <field name="model">it.contrat</field>
+            <field name="arch" type="xml">
+                <form string="Contrat">
+                    <header>
+                        <button name="action_renouveler" string="Renouveler" type="object" class="btn-primary" invisible="state not in ['actif', 'expire']"/>
+                        <button name="action_annuler" string="Annuler" type="object" class="btn-danger" invisible="state in ['annule', 'renouvele']"/>
+                        <field name="state" widget="statusbar" statusbar_visible="actif,expire,renouvele,annule"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" icon="fa-calendar">
+                                <field name="jours_restants" widget="statinfo" string="Jours restants"/>
+                            </button>
+                            <button class="oe_stat_button" icon="fa-money">
+                                <field name="montant" widget="statinfo" string="Montant (FCFA)"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="fournisseur_id" required="1"/>
+                                <field name="type_contrat" required="1"/>
+                            </group>
+                            <group>
+                                <field name="date_debut" required="1"/>
+                                <field name="date_fin" required="1"/>
+                                <field name="montant" required="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="Équipements couverts">
+                                <field name="equipement_ids" widget="many2many_tags"/>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- IT Contrat Search View -->
+        <record id="it_contrat_search_view" model="ir.ui.view">
+            <field name="name">it.contrat.search</field>
+            <field name="model">it.contrat</field>
+            <field name="arch" type="xml">
+                <search string="Recherche contrat">
+                    <field name="name"/>
+                    <field name="fournisseur_id"/>
+                    <field name="type_contrat"/>
+                    <field name="state"/>
+                    <filter string="Actifs" name="state_actif" domain="[('state','=','actif')]"/>
+                    <filter string="Expirés" name="state_expire" domain="[('state','=','expire')]"/>
+                    <filter string="Expire bientôt" name="expire_bientot" domain="[('expire_bientot','=',True)]"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Fournisseur" name="group_fournisseur" domain="[]" context="{'group_by':'fournisseur_id'}"/>
+                        <filter string="Type" name="group_type" domain="[]" context="{'group_by':'type_contrat'}"/>
+                        <filter string="État" name="group_state" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- IT Contrat Action -->
+        <record id="it_contrat_action" model="ir.actions.act_window">
+            <field name="name">Contrats</field>
+            <field name="res_model">it.contrat</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier contrat
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

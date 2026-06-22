@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_partner_view_form_inherit_estate" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit.estate</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook" position="inside">
+
+                <page string="Locations">
+
+                    <field name="rental_ids">
+
+                        <tree string="Locations">
+                            <field name="tenant_id"/>
+                            <field name="property_id"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="rent"/>
+                            <field name="state"/>
+                        </tree>
+
+                    </field>
+
+                </page>
+
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

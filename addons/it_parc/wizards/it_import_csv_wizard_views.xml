@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- IT Import CSV Wizard Form View -->
+        <record id="it_import_csv_wizard_form_view" model="ir.ui.view">
+            <field name="name">it.import.csv.wizard.form</field>
+            <field name="model">it.import.csv.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Importer des équipements depuis CSV">
+                    <sheet>
+                        <div class="alert alert-info" role="alert" style="margin-bottom:12px;">
+                            <strong>Format CSV accepté :</strong> Colonnes supportées : <em>nom, numero_serie, marque, modele, processeur, ram, disque_dur, os, mac, ip, date_achat, prix_achat, date_garantie, categorie, site, etat</em>.<br/>
+                            Séparateur virgule (,) ou point-virgule (;). Encodage UTF-8 ou Latin-1.
+                        </div>
+                        <group>
+                            <group string="Fichier">
+                                <field name="csv_file" widget="binary" filename="csv_filename" string="Fichier CSV"/>
+                                <field name="csv_filename" invisible="1"/>
+                            </group>
+                            <group string="Valeurs par défaut">
+                                <field name="categorie_id" required="1"/>
+                                <field name="site_id" required="1"/>
+                            </group>
+                        </group>
+                        <group string="Résultat" invisible="not resultat">
+                            <field name="resultat" readonly="1" widget="text" nolabel="1" colspan="2"/>
+                            <group>
+                                <field name="lignes_crees" readonly="1"/>
+                                <field name="lignes_ignores" readonly="1"/>
+                                <field name="lignes_erreur" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_importer" string="📥 Importer" type="object" class="btn-primary" invisible="resultat"/>
+                        <button string="Fermer" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- IT Import CSV Action -->
+        <record id="it_import_csv_action" model="ir.actions.act_window">
+            <field name="name">Importer des équipements (CSV)</field>
+            <field name="res_model">it.import.csv.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu item for CSV import -->
+        <menuitem id="it_import_csv_menu" name="Importer CSV" parent="it_parc_root_menu" action="it_import_csv_action" sequence="7"/>
+    </data>
+</odoo>

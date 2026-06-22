@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="it_parc.Dashboard">
+        <div class="o_dashboard">
+            <div class="o_dashboard_header p-4 bg-white border-bottom shadow-sm mb-4">
+                <h2 class="text-primary mb-1">Dashboard IT Parc</h2>
+                <p class="text-muted mb-0">Vue d'ensemble du parc informatique TECHPARK CI</p>
+            </div>
+
+            <div class="container-fluid px-4">
+                <!-- KPIs -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="card shadow-sm h-100 border-0 border-start border-primary border-4">
+                            <div class="card-body">
+                                <h6 class="card-title text-muted text-uppercase fw-bold mb-2">Total Équipements</h6>
+                                <h2 class="card-text text-primary display-6 fw-bold mb-0"><t t-esc="state.totalEquipements"/></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm h-100 border-0 border-start border-success border-4">
+                            <div class="card-body">
+                                <h6 class="card-title text-muted text-uppercase fw-bold mb-2">Équipements Affectés</h6>
+                                <h2 class="card-text text-success display-6 fw-bold mb-0"><t t-esc="state.equipementsAffectes"/></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm h-100 border-0 border-start border-warning border-4">
+                            <div class="card-body">
+                                <h6 class="card-title text-muted text-uppercase fw-bold mb-2">En Maintenance</h6>
+                                <h2 class="card-text text-warning display-6 fw-bold mb-0"><t t-esc="state.equipementsMaintenance"/></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm h-100 border-0 border-start border-info border-4">
+                            <div class="card-body">
+                                <h6 class="card-title text-muted text-uppercase fw-bold mb-2">Interventions en cours</h6>
+                                <h2 class="card-text text-info display-6 fw-bold mb-0"><t t-esc="state.interventionsEnCours"/></h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom HTML/CSS Charts -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                                <h5 class="card-title fw-bold text-dark mb-0">Équipements par Catégorie</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mt-3">
+                                    <t t-if="state.equipementsParCategorie.length === 0">
+                                        <div class="text-center text-muted p-4">Aucune donnée disponible</div>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-foreach="state.equipementsParCategorie" t-as="cat" t-key="cat.name">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span class="text-muted"><t t-esc="cat.name"/></span>
+                                                    <span class="fw-bold"><t t-esc="cat.count"/></span>
+                                                </div>
+                                                <div class="progress" style="height: 10px;">
+                                                    <div class="progress-bar bg-primary rounded" 
+                                                         role="progressbar" 
+                                                         t-att-style="`width: ${(cat.count / state.maxEquipementsParCategorie) * 100}%`" 
+                                                         t-att-aria-valuenow="cat.count" 
+                                                         aria-valuemin="0" 
+                                                         t-att-aria-valuemax="state.maxEquipementsParCategorie"></div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                                <h5 class="card-title fw-bold text-dark mb-0">Interventions par Mois (6 derniers mois)</h5>
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-end">
+                                <t t-if="state.interventionsParMois.length === 0">
+                                    <div class="text-center text-muted p-4">Aucune donnée disponible</div>
+                                </t>
+                                <t t-else="">
+                                    <div class="d-flex align-items-end justify-content-between h-100 mt-4 px-2" style="min-height: 200px;">
+                                        <t t-foreach="state.interventionsParMois" t-as="monthData" t-key="monthData.month">
+                                            <div class="d-flex flex-column align-items-center w-100 px-1">
+                                                <span class="fw-bold mb-2 text-dark"><t t-esc="monthData.count"/></span>
+                                                <div class="w-100 bg-info rounded-top" 
+                                                     t-att-style="`height: ${Math.max((monthData.count / state.maxInterventionsParMois) * 150, 4)}px; opacity: 0.8; transition: height 0.5s ease;`">
+                                                </div>
+                                                <span class="text-muted small mt-2 text-center" style="font-size: 0.75rem;"><t t-esc="monthData.month"/></span>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

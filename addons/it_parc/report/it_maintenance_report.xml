@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report: Historique des maintenances -->
+        <report 
+            id="it_maintenance_report" 
+            model="it.intervention" 
+            string="Historique maintenances" 
+            report_type="qweb-pdf" 
+            name="it_parc.it_maintenance_template" 
+            file="it_parc.it_maintenance_template"
+            print_report_name="'Maintenance_%s' % (time.strftime('%Y%m%d'))"/>
+
+        <template id="it_maintenance_template">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Historique des Interventions de Maintenance</h2>
+                    <p class="text-muted">Généré le : <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/></p>
+                    
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Référence</th>
+                                <th>Équipement</th>
+                                <th>Technicien</th>
+                                <th>Type</th>
+                                <th>Priorité</th>
+                                <th>Date début</th>
+                                <th>Date fin</th>
+                                <th>Durée (h)</th>
+                                <th>Coût (FCFA)</th>
+                                <th>État</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="intervention">
+                                <tr>
+                                    <td><span t-field="intervention.name"/></td>
+                                    <td><span t-field="intervention.equipement_id.name"/></td>
+                                    <td><span t-field="intervention.technicien_id.name"/></td>
+                                    <td><span t-field="intervention.type_intervention"/></td>
+                                    <td><span t-field="intervention.priorite"/></td>
+                                    <td><span t-field="intervention.date_debut"/></td>
+                                    <td><span t-field="intervention.date_fin"/></td>
+                                    <td><span t-field="intervention.duree_heures"/></td>
+                                    <td><span t-field="intervention.cout"/></td>
+                                    <td><span t-field="intervention.state"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="row mt32">
+                        <div class="col-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Coût total maintenance</h5>
+                                    <h3 class="card-text"><t t-esc="sum(docs.mapped('cout'))"/> FCFA</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Durée totale</h5>
+                                    <h3 class="card-text"><t t-esc="sum(docs.mapped('duree_heures'))"/> heures</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt32">
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total interventions</h5>
+                                    <h3 class="card-text"><t t-esc="len(docs)"/></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Terminées</h5>
+                                    <h3 class="card-text"><t t-esc="len(docs.filtered(lambda i: i.state == 'termine'))"/></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">En cours</h5>
+                                    <h3 class="card-text"><t t-esc="len(docs.filtered(lambda i: i.state == 'en_cours'))"/></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

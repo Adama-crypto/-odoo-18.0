@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report: Fiche individuelle d'équipement -->
+        <report 
+            id="it_equipement_report" 
+            model="it.equipement" 
+            string="Fiche équipement" 
+            report_type="qweb-pdf" 
+            name="it_parc.it_equipement_template" 
+            file="it_parc.it_equipement_template"
+            print_report_name="'Fiche_%s' % (object.name)"/>
+
+        <template id="it_equipement_template">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Fiche Équipement</h2>
+                    <div class="row mt32">
+                        <div class="col-6">
+                            <strong>Nom :</strong> <span t-field="doc.name"/><br/>
+                            <strong>Numéro de série :</strong> <span t-field="doc.numero_serie"/><br/>
+                            <strong>Catégorie :</strong> <span t-field="doc.categorie_id.name"/><br/>
+                            <strong>Marque :</strong> <span t-field="doc.marque"/><br/>
+                            <strong>Modèle :</strong> <span t-field="doc.modele"/>
+                        </div>
+                        <div class="col-6">
+                            <strong>État :</strong> <span t-field="doc.state"/><br/>
+                            <strong>Site :</strong> <span t-field="doc.site_id.name"/><br/>
+                            <strong>Département :</strong> <span t-field="doc.departement_id.name"/><br/>
+                            <strong>Employé actuel :</strong> <span t-field="doc.employe_id.name"/>
+                        </div>
+                    </div>
+                    
+                    <h3 class="mt32">Caractéristiques techniques</h3>
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Processeur :</strong></td>
+                            <td><span t-field="doc.processeur"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>RAM :</strong></td>
+                            <td><span t-field="doc.ram"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Disque dur :</strong></td>
+                            <td><span t-field="doc.disque_dur"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Système d'exploitation :</strong></td>
+                            <td><span t-field="doc.systeme_exploitation"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Adresse MAC :</strong></td>
+                            <td><span t-field="doc.adresse_mac"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Adresse IP :</strong></td>
+                            <td><span t-field="doc.adresse_ip"/></td>
+                        </tr>
+                    </table>
+
+                    <h3 class="mt32">Informations financières</h3>
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Date d'achat :</strong></td>
+                            <td><span t-field="doc.date_achat"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Prix d'achat :</strong></td>
+                            <td><span t-field="doc.prix_achat"/> FCFA</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date fin de garantie :</strong></td>
+                            <td><span t-field="doc.date_garantie"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jours garantie restants :</strong></td>
+                            <td><span t-field="doc.jours_garantie_restants"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fournisseur :</strong></td>
+                            <td><span t-field="doc.fournisseur_id.name"/></td>
+                        </tr>
+                    </table>
+
+                    <h3 class="mt32">Historique des affectations</h3>
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Employé</th>
+                                <th>Date début</th>
+                                <th>Date fin</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.affectation_ids" t-as="affectation">
+                                <tr>
+                                    <td><span t-field="affectation.employe_id.name"/></td>
+                                    <td><span t-field="affectation.date_debut"/></td>
+                                    <td><span t-field="affectation.date_fin"/></td>
+                                    <td><span t-field="affectation.active"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <h3 class="mt32">Interventions</h3>
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Référence</th>
+                                <th>Technicien</th>
+                                <th>Type</th>
+                                <th>Date début</th>
+                                <th>État</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.intervention_ids" t-as="intervention">
+                                <tr>
+                                    <td><span t-field="intervention.name"/></td>
+                                    <td><span t-field="intervention.technicien_id.name"/></td>
+                                    <td><span t-field="intervention.type_intervention"/></td>
+                                    <td><span t-field="intervention.date_debut"/></td>
+                                    <td><span t-field="intervention.state"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="mt32" t-if="doc.notes">
+                        <h3>Notes</h3>
+                        <p><span t-field="doc.notes"/></p>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

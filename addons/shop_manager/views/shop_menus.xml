@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_shop_manager_root" name="Shop Manager" sequence="10"/>
+
+    <!-- Order action -->
+    <record id="action_shop_order" model="ir.actions.act_window">
+        <field name="name">Commandes</field>
+        <field name="res_model">shop.order</field>
+        <field name="view_mode">list,kanban,calendar,form</field>
+    </record>
+
+    <!-- Product action -->
+    <record id="action_shop_product" model="ir.actions.act_window">
+        <field name="name">Produits</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,kanban,form</field>
+    </record>
+
+    <!-- Category action -->
+    <record id="action_shop_category" model="ir.actions.act_window">
+        <field name="name">Catégories de produits</field>
+        <field name="res_model">product.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Customer action -->
+    <record id="action_shop_customer" model="ir.actions.act_window">
+        <field name="name">Clients</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('customer_rank', '>', 0)]</field>
+        <field name="context">{'default_customer_rank': 1}</field>
+    </record>
+
+    <!-- Invoice action -->
+    <record id="action_shop_invoice" model="ir.actions.act_window">
+        <field name="name">Factures</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('move_type', '=', 'out_invoice')]</field>
+        <field name="context">{'default_move_type': 'out_invoice'}</field>
+    </record>
+
+    <!-- Sub Menus -->
+    <menuitem id="menu_shop_orders"
+              name="Commandes"
+              parent="menu_shop_manager_root"
+              sequence="10"
+              action="action_shop_order"/>
+
+    <menuitem id="menu_shop_products"
+              name="Produits"
+              parent="menu_shop_manager_root"
+              sequence="20"
+              action="action_shop_product"/>
+
+    <menuitem id="menu_shop_categories"
+              name="Catégories"
+              parent="menu_shop_manager_root"
+              sequence="30"
+              action="action_shop_category"/>
+
+    <menuitem id="menu_shop_customers"
+              name="Clients"
+              parent="menu_shop_manager_root"
+              sequence="40"
+              action="action_shop_customer"/>
+
+    <menuitem id="menu_shop_invoices"
+              name="Factures"
+              parent="menu_shop_manager_root"
+              sequence="50"
+              action="action_shop_invoice"/>
+</odoo>

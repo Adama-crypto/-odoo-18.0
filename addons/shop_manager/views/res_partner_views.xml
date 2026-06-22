@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_inherit_shop_manager" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.shop.manager</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <!-- Onglet Commandes -->
+                <page string="Commandes Boutique">
+                    <field name="shop_order_ids" readonly="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="date_order"/>
+                            <field name="amount_total"/>
+                            <field name="state" widget="badge"
+                                decoration-info="state == 'draft'"
+                                decoration-warning="state in ('confirmed', 'preparation')"
+                                decoration-success="state in ('shipped', 'delivered')"
+                                decoration-danger="state == 'cancel'"/>
+                        </list>
+                    </field>
+                </page>
+                <!-- Onglet Factures -->
+                <page string="Factures Boutique">
+                    <field name="shop_invoice_ids" readonly="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="invoice_date"/>
+                            <field name="amount_total"/>
+                            <field name="state" widget="badge"
+                                decoration-info="state == 'draft'"
+                                decoration-success="state == 'posted'"
+                                decoration-danger="state == 'cancel'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

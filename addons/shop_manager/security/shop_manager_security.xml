@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Catégorie du module -->
+        <record id="module_category_shop_manager" model="ir.module.category">
+            <field name="name">Shop Manager</field>
+            <field name="description">Gestion de boutique</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <!-- Groupe : Utilisateur -->
+        <record id="group_shop_user" model="res.groups">
+            <field name="name">Utilisateur</field>
+            <field name="category_id" ref="module_category_shop_manager"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Groupe : Responsable boutique -->
+        <record id="group_shop_manager" model="res.groups">
+            <field name="name">Responsable</field>
+            <field name="category_id" ref="module_category_shop_manager"/>
+            <field name="implied_ids" eval="[(4, ref('group_shop_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Groupe : Administrateur boutique -->
+        <record id="group_shop_admin" model="res.groups">
+            <field name="name">Administrateur</field>
+            <field name="category_id" ref="module_category_shop_manager"/>
+            <field name="implied_ids" eval="[(4, ref('group_shop_manager'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Record Rules : Commandes -->
+        <record id="rule_shop_order_user_own" model="ir.rule">
+            <field name="name">Commande: voir ses commandes</field>
+            <field name="model_id" ref="model_shop_order"/>
+            <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_shop_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="rule_shop_order_manager_all" model="ir.rule">
+            <field name="name">Commande: voir toutes les commandes</field>
+            <field name="model_id" ref="model_shop_order"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_shop_manager'))]"/>
+        </record>
+
+    </data>
+</odoo>

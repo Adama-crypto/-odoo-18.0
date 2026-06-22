@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- IT Alerte Tree View -->
+        <record id="it_alerte_tree_view" model="ir.ui.view">
+            <field name="name">it.alerte.list</field>
+            <field name="model">it.alerte</field>
+            <field name="arch" type="xml">
+                <list string="Alertes">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="delai_jours"/>
+                    <field name="active"/>
+                    <field name="nombre_alertes_actives"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- IT Alerte Form View -->
+        <record id="it_alerte_form_view" model="ir.ui.view">
+            <field name="name">it.alerte.form</field>
+            <field name="model">it.alerte</field>
+            <field name="arch" type="xml">
+                <form string="Alerte">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="type" required="1"/>
+                                <field name="delai_jours" required="1"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="nombre_alertes_actives" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- IT Alerte Action -->
+        <record id="it_alerte_action" model="ir.actions.act_window">
+            <field name="name">Configuration des alertes</field>
+            <field name="res_model">it.alerte</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- IT Alerte Log Tree View -->
+        <record id="it_alerte_log_tree_view" model="ir.ui.view">
+            <field name="name">it.alerte.log.list</field>
+            <field name="model">it.alerte.log</field>
+            <field name="arch" type="xml">
+                <list string="Historique des scans">
+                    <field name="alerte_id"/>
+                    <field name="date_scan"/>
+                    <field name="nombre_alertes"/>
+                    <field name="message"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- IT Alerte Log Action -->
+        <record id="it_alerte_log_action" model="ir.actions.act_window">
+            <field name="name">Historique des scans d'alertes</field>
+            <field name="res_model">it.alerte.log</field>
+            <field name="view_mode">list</field>
+        </record>
+    </data>
+</odoo>

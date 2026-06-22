@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- IT Equipement List View -->
+        <record id="it_equipement_list_view" model="ir.ui.view">
+            <field name="name">it.equipement.list</field>
+            <field name="model">it.equipement</field>
+            <field name="arch" type="xml">
+                <list string="Équipements">
+                    <field name="name"/>
+                    <field name="numero_serie"/>
+                    <field name="categorie_id"/>
+                    <field name="marque"/>
+                    <field name="employe_id"/>
+                    <field name="site_id"/>
+                    <field name="state" decoration-success="state=='affecte'" decoration-warning="state=='maintenance'" decoration-danger="state=='retire'"/>
+                    <field name="date_garantie"/>
+                    <field name="jours_garantie_restants" decoration-danger="jours_garantie_restants&lt;=30"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- IT Equipement Form View -->
+        <record id="it_equipement_form_view" model="ir.ui.view">
+            <field name="name">it.equipement.form</field>
+            <field name="model">it.equipement</field>
+            <field name="arch" type="xml">
+                <form string="Équipement">
+                    <header>
+                        <button name="action_affecter" string="Affecter" type="object" class="btn-primary" invisible="state in ['affecte', 'maintenance']"/>
+                        <button name="action_reaffecter" string="Réaffecter" type="object" invisible="state != 'affecte'"/>
+                        <button name="action_maintenance" string="Mettre en maintenance" type="object" invisible="state in ['maintenance', 'retire']"/>
+                        <button name="action_retirer" string="Retirer" type="object" invisible="state in ['brouillon', 'retire']"/>
+                        <button name="action_reactiver" string="Réactiver" type="object" invisible="state != 'retire'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_affecter" type="object" class="oe_stat_button" icon="fa-user" invisible="state in ['affecte', 'maintenance']">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Affecter</span>
+                                </div>
+                            </button>
+                            <button class="oe_stat_button" icon="fa-wrench" name="action_maintenance" type="object" invisible="state in ['maintenance', 'retire']">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Maintenance</span>
+                                </div>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="numero_serie"/>
+                                <field name="categorie_id"/>
+                                <field name="marque"/>
+                                <field name="modele"/>
+                            </group>
+                            <group>
+                                <field name="site_id"/>
+                                <field name="departement_id"/>
+                                <field name="employe_id"/>
+                                <field name="state"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Caractéristiques techniques">
+                                <group>
+                                    <group>
+                                        <field name="processeur"/>
+                                        <field name="ram"/>
+                                        <field name="disque_dur"/>
+                                        <field name="systeme_exploitation"/>
+                                    </group>
+                                    <group>
+                                        <field name="adresse_mac"/>
+                                        <field name="adresse_ip"/>
+                                        <field name="image" widget="image"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Informations financières">
+                                <group>
+                                    <group>
+                                        <field name="date_achat"/>
+                                        <field name="prix_achat"/>
+                                        <field name="fournisseur_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="date_garantie"/>
+                                        <field name="jours_garantie_restants"/>
+                                        <field name="garantie_expire"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Historique des affectations">
+                                <field name="affectation_ids">
+                                    <list>
+                                        <field name="employe_id"/>
+                                        <field name="date_debut"/>
+                                        <field name="date_fin"/>
+                                        <field name="active"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Interventions">
+                                <field name="intervention_ids">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="technicien_id"/>
+                                        <field name="date_debut"/>
+                                        <field name="type_intervention"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Contrats">
+                                <field name="contrat_ids" widget="many2many_tags"/>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="it_equipement_kanban_view" model="ir.ui.view">
+            <field name="name">it.equipement.kanban</field>
+            <field name="model">it.equipement</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <field name="numero_serie"/>
+                    <field name="categorie_id"/>
+                    <field name="employe_id"/>
+                    <field name="state"/>
+                    <field name="site_id"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                    <span class="o_kanban_record_subtitle text-muted">
+                                        <field name="numero_serie"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <field name="categorie_id"/>
+                                <div t-if="record.employe_id.value">
+                                    👤 <field name="employe_id"/>
+                                </div>
+                                <div t-if="record.site_id.value">
+                                    📍 <field name="site_id"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="state" widget="label_selection"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- IT Equipement Search View -->
+        <record id="it_equipement_search_view" model="ir.ui.view">
+            <field name="name">it.equipement.search</field>
+            <field name="model">it.equipement</field>
+            <field name="arch" type="xml">
+                <search string="Recherche équipement">
+                    <field name="name"/>
+                    <field name="numero_serie"/>
+                    <field name="categorie_id"/>
+                    <field name="marque"/>
+                    <field name="employe_id"/>
+                    <field name="site_id"/>
+                    <field name="state"/>
+                    <filter string="Brouillon" name="state_brouillon" domain="[('state','=','brouillon')]"/>
+                    <filter string="Affecté" name="state_affecte" domain="[('state','=','affecte')]"/>
+                    <filter string="En maintenance" name="state_maintenance" domain="[('state','=','maintenance')]"/>
+                    <filter string="Retiré" name="state_retire" domain="[('state','=','retire')]"/>
+                    <filter string="Garantie expirée" name="garantie_expire" domain="[('garantie_expire','=',True)]"/>
+                    <separator/>
+                    <filter string="Mon équipement" name="my_equipment" domain="[('employe_id.user_id','=',uid)]"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Catégorie" name="group_categorie" domain="[]" context="{'group_by':'categorie_id'}"/>
+                        <filter string="Site" name="group_site" domain="[]" context="{'group_by':'site_id'}"/>
+                        <filter string="État" name="group_state" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Département" name="group_departement" domain="[]" context="{'group_by':'departement_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- IT Equipement Action -->
+        <record id="it_equipement_action" model="ir.actions.act_window">
+            <field name="name">Équipements</field>
+            <field name="res_model">it.equipement</field>
+            <field name="view_mode">list,kanban,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier équipement
+                </p>
+            </field>
+        </record>
+
+        <!-- IT Equipement Categorie Views -->
+        <record id="it_equipement_categorie_tree_view" model="ir.ui.view">
+            <field name="name">it.equipement.categorie.list</field>
+            <field name="model">it.equipement.categorie</field>
+            <field name="arch" type="xml">
+                <list string="Catégories">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="it_equipement_categorie_form_view" model="ir.ui.view">
+            <field name="name">it.equipement.categorie.form</field>
+            <field name="model">it.equipement.categorie</field>
+            <field name="arch" type="xml">
+                <form string="Catégorie">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="it_equipement_categorie_action" model="ir.actions.act_window">
+            <field name="name">Catégories d'équipement</field>
+            <field name="res_model">it.equipement.categorie</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- IT Site Views -->
+        <record id="it_site_tree_view" model="ir.ui.view">
+            <field name="name">it.site.list</field>
+            <field name="model">it.site</field>
+            <field name="arch" type="xml">
+                <list string="Sites">
+                    <field name="name"/>
+                    <field name="ville"/>
+                    <field name="pays_id"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="it_site_form_view" model="ir.ui.view">
+            <field name="name">it.site.form</field>
+            <field name="model">it.site</field>
+            <field name="arch" type="xml">
+                <form string="Site">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="ville"/>
+                                <field name="pays_id"/>
+                            </group>
+                            <group>
+                                <field name="telephone"/>
+                                <field name="email"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="adresse"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="it_site_action" model="ir.actions.act_window">
+            <field name="name">Sites</field>
+            <field name="res_model">it.site</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>

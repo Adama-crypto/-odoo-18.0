@@ -1,0 +1,23 @@
+{
+    'name': 'Shop Manager',
+    'version': '1.0',
+    'category': 'Sales',
+    'summary': 'Gestion complète d’une boutique en ligne',
+    'depends': ['base', 'contacts', 'stock', 'account', 'website', 'mail', 'portal'],
+    'data': [
+        'security/shop_manager_security.xml',
+        'security/ir.model.access.csv',
+        'data/ir_sequence_data.xml',
+        'reports/shop_order_report.xml',
+        'reports/shop_invoice_report.xml',
+        'views/shop_menus.xml',
+        'views/shop_order_views.xml',
+        'views/res_partner_views.xml',
+        'views/product_views.xml',
+        'views/website_templates.xml',
+        'views/portal_templates.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'license': 'LGPL-3',
+}
