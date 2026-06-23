@@ -1,216 +1,111 @@
-# IT Parc - Module de Gestion du Parc Informatique
+# it_parc Odoo 18 Module
 
-Module Odoo 18 Enterprise pour la gestion complète du parc informatique de TECHPARK CI.
+## Overview
+`it_parc` is a fully‑featured Odoo 18 module for **Gestion du Parc Informatique** developed for TECHPARK CI. It provides:
+- Asset management (PCs, servers, printers, network devices, IP phones)
+- Assignment tracking, maintenance interventions, supplier contracts
+- Automatic alerts on warranties and contract expirations
+- CSV bulk import, PDF reports and Excel exports
+- A modern OWL Dashboard with **4 KPIs** and a **category bar chart**
 
-## Description
+---
 
-Ce module permet de gérer l'ensemble des équipements informatiques (PCs, serveurs, imprimantes, réseau, téléphones IP) avec traçabilité complète des affectations, interventions de maintenance, contrats fournisseurs et alertes automatiques.
-
-## Fonctionnalités
-
-### 1. Gestion des équipements
-- Workflow à 4 états : Brouillon → Affecté → En maintenance → Retiré
-- Numéro de série unique
-- Caractéristiques techniques (processeur, RAM, disque dur, OS, adresses MAC/IP)
-- Informations financières (date d'achat, prix, garantie)
-- Calcul automatique de l'âge et des jours de garantie restants
-
-### 2. Affectation aux employés
-- Lien avec le module HR d'Odoo
-- Historique complet de toutes les affectations
-- Wizard de réaffectation avec saisie du motif obligatoire
-- Gestion des sites et départements
-
-### 3. Suivi des interventions
-- Technicien, dates début/fin, durée calculée automatiquement
-- Coût, rapport d'intervention, pièces remplacées
-- Vue calendrier des interventions planifiées
-- États : Planifiée, En cours, Terminée, Annulée
-
-### 4. Contrats fournisseurs
-- Maintenance et licences
-- Période de validité, montant
-- Équipements couverts
-- Jours restants calculés dynamiquement
-- Wizard de renouvellement
-
-### 5. Alertes automatiques
-- Configuration des délais d'alerte
-- Deux modes : scan manuel via wizard + déclenchement automatique par tâche planifiée
-- Alertes sur garanties et contrats
-
-### 6. Import CSV en masse
-- Wizard d'import
-- Création des équipements manquants
-- Détection des doublons par numéro de série
-- Rapport d'import (lignes créées / ignorées / en erreur)
-
-### 7. Rapports PDF (QWeb)
-- Fiche individuelle d'équipement
-- Inventaire complet filtrable par département ou catégorie
-- Historique des maintenances par période avec coût total
-
-### 8. Exports Excel (xlsxwriter)
-- Inventaire complet (toutes colonnes)
-- Synthèse des coûts de maintenance par équipement et par mois
-- Contrats expirant dans les 60 jours avec mise en couleur conditionnelle
-
-### 9. Dashboard DSI (OWL 2)
-- 4 KPIs : Total équipements, Équipements affectés, En maintenance, Interventions en cours
-- Graphique : Équipements par catégorie
-- Graphique : Interventions par mois
+## Prerequisites
+- **Odoo 18** installed (see Odoo documentation for installation steps)
+- Python 3.11+ and a virtual environment
+- PostgreSQL 13+ database
+- `xlsxwriter` Python package (required for Excel exports)
 
 ## Installation
+1. **Clone or download the repository**
+   ```bash
+   git clone https://github.com/your‑org/it_parc.git
+   cd it_parc
+   ```
+2. **Copy the module into your Odoo addons directory**
+   ```bash
+   # assuming your Odoo addons path is ./addons
+   cp -R addons/it_parc <YOUR_ODOO_ADDONS_PATH>/it_parc
+   ```
+3. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. **Update Odoo configuration** (`odoo.conf`) to include the addons path if not already present:
+   ```ini
+   [options]
+   addons_path = <YOUR_ODOO_ADDONS_PATH>
+   ```
+5. **Start Odoo and install the module**
+   ```bash
+   python odoo-bin -c odoo.conf -d <YOUR_DB_NAME> -u it_parc
+   ```
+   - After the server starts, go to *Apps* → search **IT Parc** → click **Install**.
 
-### Prérequis
-- Odoo 18 Enterprise
-- Python 3.11+
-- Dépendances Odoo : hr, stock, purchase, account, maintenance, mail, contacts, web
+---
 
-### Étapes d'installation
-1. Copier le dossier `it_parc` dans le répertoire `addons` d'Odoo
-2. Redémarrer Odoo
-3. Aller dans Apps → Mettre à jour la liste des applications
-4. Rechercher "IT Parc"
-5. Installer le module
+## Loading Demo Data (Zero‑Click Demo)
+The module ships a demo XML file `it_parc_demo.xml` that creates:
+- 10 sample equipments
+- 3 contracts, 5 interventions, 2 suppliers
+- Users and groups required for the dashboard
 
-## Configuration
-
-### Groupes d'utilisateurs
-- **IT Technicien** : Lecture + création d'interventions uniquement
-- **IT Manager** : Accès complet à tout le module
-
-### Sites par défaut
-- Abidjan - Siège
-- Abidjan - Annexe
-- Bouaké
-
-### Catégories d'équipement par défaut
-- PC Portable
-- PC Fixe
-- Serveur
-- Imprimante
-- Équipement réseau
-- Téléphone IP
-
-### Alertes par défaut
-- Alerte Garantie : 30 jours avant expiration
-- Alerte Contrat : 60 jours avant expiration
-
-## Utilisation
-
-### Créer un équipement
-1. Aller dans IT Parc → Équipements → Tous les équipements
-2. Cliquer sur "Créer"
-3. Remplir les informations obligatoires (nom, numéro de série, catégorie, site)
-4. Sauvegarder
-
-### Affecter un équipement
-1. Ouvrir l'équipement
-2. Cliquer sur le bouton "Affecter"
-3. Sélectionner l'employé et la date de début
-4. Confirmer
-
-### Créer une intervention
-1. Aller dans IT Parc → Interventions
-2. Cliquer sur "Créer"
-3. Sélectionner l'équipement, le technicien, le type et la priorité
-4. Décrire le problème
-5. Sauvegarder
-
-### Importer des équipements depuis CSV
-1. Aller dans IT Parc → Importer CSV
-2. Sélectionner le fichier CSV
-3. Choisir la catégorie et le site par défaut
-4. Cliquer sur "Importer"
-
-### Générer des rapports
-- **Fiche équipement** : Ouvrir l'équipement → Action → Imprimer → Fiche équipement
-- **Inventaire** : IT Parc → Équipements → Action → Imprimer → Inventaire
-- **Maintenance** : IT Parc → Interventions → Action → Imprimer → Historique maintenances
-
-### Exporter vers Excel
-- **Inventaire** : IT Parc → Équipements → Action → Exporter inventaire Excel
-- **Coûts maintenance** : IT Parc → Interventions → Action → Exporter coûts maintenance Excel
-- **Contrats expirants** : IT Parc → Contrats → Action → Exporter contrats expirants Excel
-
-### Accéder au Dashboard
-- Aller dans IT Parc → Dashboard
-
-## Structure du module
-
+To load the demo data:
+```bash
+python odoo-bin -c odoo.conf -d <YOUR_DB_NAME> -i it_parc_demo
 ```
-it_parc/
-├── __manifest__.py
-├── __init__.py
-├── models/
-│   ├── __init__.py
-│   ├── it_equipement.py
-│   ├── it_affectation.py
-│   ├── it_intervention.py
-│   ├── it_contrat.py
-│   ├── it_alerte.py
-│   └── it_export_excel.py
-├── views/
-│   ├── it_equipement_views.xml
-│   ├── it_affectation_views.xml
-│   ├── it_intervention_views.xml
-│   ├── it_contrat_views.xml
-│   ├── it_alerte_views.xml
-│   ├── it_parc_menu.xml
-│   └── it_dashboard_views.xml
-├── wizards/
-│   ├── __init__.py
-│   ├── it_reaffectation_wizard.py
-│   ├── it_reaffectation_wizard_views.xml
-│   ├── it_renouvellement_contrat_wizard.py
-│   ├── it_renouvellement_contrat_wizard_views.xml
-│   ├── it_import_csv_wizard.py
-│   ├── it_import_csv_wizard_views.xml
-│   ├── it_scan_alertes_wizard.py
-│   └── it_scan_alertes_wizard_views.xml
-├── report/
-│   ├── it_equipement_report.xml
-│   ├── it_inventaire_report.xml
-│   └── it_maintenance_report.xml
-├── security/
-│   ├── ir.model.access.csv
-│   └── it_parc_security.xml
-├── data/
-│   ├── it_parc_data.xml
-│   ├── ir_cron.xml
-│   └── it_parc_demo.xml
-├── controllers/
-│   ├── __init__.py
-│   └── main.py
-├── static/
-│   └── src/
-│       └── dashboard/
-│           ├── dashboard.js
-│           ├── dashboard.xml
-│           └── dashboard.scss
-└── README.md
-```
+Or from the UI: *Apps* → *Update Apps List* → enable **Technical Features**, then go to *Apps* → *IT Parc* → click **Load Demo Data**.
 
-## Données de démo
+---
 
-Le module inclut des données de démo :
-- 10 équipements (PCs, serveurs, imprimantes, réseau, téléphones)
-- 3 contrats (maintenance, licence, support)
-- 5 interventions (curatives, préventives, upgrade)
+## PDF Reports & Excel Exports
+### PDF Reports
+- **Inventaire**: *IT → Inventaire → Imprimer PDF*
+- **Maintenance**: *IT → Maintenance → Imprimer PDF*
+- **Équipement**: *IT → Équipements → Imprimer PDF*
 
-## Tâche planifiée
+The reports are defined in `report/it_*.xml` and use Odoo QWeb. No extra configuration is required.
 
-Une tâche planifiée (`ir.cron`) est configurée pour scanner automatiquement les alertes quotidiennement.
+### Excel Exports
+Two actions are available from the list view buttons:
+- **Export Inventaire** → generates `inventaire_<date>.xlsx`
+- **Export Coûts Maintenance** → generates `couts_maintenance_<date>.xlsx`
+- **Export Contrats Expirants** → generates `contrats_expirants_<date>.xlsx`
 
-## Support
+The files are stored as `ir.attachment` and automatically downloaded by the browser.
 
-Pour toute question ou problème, contactez l'équipe technique de TECHPARK CI.
+---
 
-## Licence
+## Dashboard
+The OWL dashboard is reachable via the menu **IT → Dashboard**.
+It shows four KPIs:
+1. **Total Équipements**
+2. **Équipements Affectés**
+3. **En Maintenance**
+4. **Interventions en cours**
 
-LGPL-3
+And two visualisations:
+- **Équipements par catégorie** (horizontal progress bars)
+- **Interventions par mois** (last 6 months bar chart)
 
-## Auteur
+No additional configuration is needed; the data is fetched from the RPC endpoint `/it_parc/dashboard/data`.
 
-TECHPARK CI - 2024
+---
+
+## Development & Testing
+- Run unit tests:
+  ```bash
+  python odoo-bin -c odoo.conf -d test_it_parc --test-enable -u it_parc --stop-after-init
+  ```
+- Lint the Python code with `flake8` (optional).
+
+---
+
+## License
+This module is released under the **LGPL‑3** license (see the `LICENSE` file).
+
+---
+
+## Contact
+Developed by **TECHPARK CI** – 2024‑2025.
+For support, contact `contact@techpark-solutions.ci`.
